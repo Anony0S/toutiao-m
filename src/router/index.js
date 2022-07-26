@@ -5,6 +5,10 @@ Vue.use(VueRouter)
 
 export default new VueRouter({
 	routes: [
-		
+		{
+			path: "/login",
+			name: "login",
+			component: () => import("@/views/login")
+		}
 	]
 })
