@@ -9,6 +9,11 @@ export default new VueRouter({
 			path: "/login",
 			name: "login",
 			component: () => import("@/views/login")
+		},
+		{
+			path: "/",
+			name: "layout",
+			component: () => import('@/views/layout')
 		}
 	]
 })

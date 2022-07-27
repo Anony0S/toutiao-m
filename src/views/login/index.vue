@@ -59,6 +59,7 @@
 <script>
 import { loginAPI, sendSMSAPI } from "@/api";
 export default {
+    name: "Login",
     data() {
         return {
             user: {
