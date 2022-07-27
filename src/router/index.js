@@ -12,8 +12,30 @@ export default new VueRouter({
 		},
 		{
 			path: "/",
-			name: "layout",
-			component: () => import('@/views/layout')
+			redirect: "/home",	//默认页面，名字和路径都可以
+			component: () => import('@/views/layout'),
+			children: [
+				{
+					path: "home",	//默认子路由
+					name: "home",
+					component: () => import("@/views/home")
+				},
+				{
+					path: "question",
+					name: "question",
+					component: () => import("@/views/question")
+				},
+				{
+					path: "movies",
+					name: "movies",
+					component: () => import("@/views/movies")
+				},
+				{
+					path: "my",
+					name: "my",
+					component: () => import("@/views/my")
+				}
+			]
 		}
 	]
 })

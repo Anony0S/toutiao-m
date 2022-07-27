@@ -135,7 +135,7 @@ export default {
                 return console.log("手机号填写错误！", err);
             }
 
-            // TODO:验证成功后
+            // 验证成功后
             try {
                 await sendSMSAPI({ mobile: this.user.mobile });
                 this.$toast("发送验证码成功！");
