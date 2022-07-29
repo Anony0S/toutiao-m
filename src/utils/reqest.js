@@ -6,7 +6,8 @@ export const request =  axios.create({
 	// baseURL: "http://ttapi.research.itcast.cn/"
 	// baseURL: "http://toutiao.itheima.net/"
 	// baseURL: "http://liufusong.top:7001"
-	baseURL: "http://liufusong.top:8000"
+	// baseURL: "http://liufusong.top:8000"
+	baseURL: "http://toutiao.itheima.net"
 })
 
 // 请求拦截器

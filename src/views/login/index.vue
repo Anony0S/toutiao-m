@@ -1,7 +1,14 @@
 <template>
     <div>
         <!-- 导航栏 -->
-        <van-nav-bar class="page-nav-bar" title="登录" />
+        <van-nav-bar class="page-nav-bar" title="登录">
+            <van-icon
+                class="close-btn"
+                slot="left"
+                name="cross"
+                @click="$router.back()"
+            />
+        </van-nav-bar>
         <!-- 导航栏 -->
 
         <!-- 登录表单 -->
@@ -111,9 +118,11 @@ export default {
 
             // 表单验证
             try {
-                const res = await loginAPI(user);
-                console.log("登录成功！", res);
+                const { data } = await loginAPI(user);
+                this.$store.commit("setUser", data.data);
                 this.$toast.success("登陆成功！");
+                // 登录成功，跳转回原来页面
+                this.$router.back();
             } catch (err) {
                 // console.log(err);
                 if (err.response.status === 400) {
@@ -153,6 +162,12 @@ export default {
 </script>
 
 <style lang="less">
+.page-nav-bar {
+    .close-btn {
+        font-size: 16px;
+        color: #fff;
+    }
+}
 .van-form {
     .iconfont {
         font-size: 19px;
