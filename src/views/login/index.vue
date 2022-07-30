@@ -133,8 +133,6 @@ export default {
                     this.$toast.fail("登录失败，请稍后重试");
                 }
             }
-
-            // TODO:提交表单请求登录
         },
         // 发送验证码
         async sendSMS() {

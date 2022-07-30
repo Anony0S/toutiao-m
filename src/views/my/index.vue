@@ -13,30 +13,30 @@
                 <div class="left">
                     <van-image
                         class="avator"
-                        src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                        :src="userInfo.photo"
                         round
                         fit="cover"
                     />
-                    <span>黑马头条号</span>
+                    <span>{{ userInfo.name }}</span>
                 </div>
                 <button class="right">编辑资料</button>
             </div>
             <div class="message">
                 <div class="center">
-                    <span class="count">88</span>
+                    <span class="count">{{ userInfo.art_count }}</span>
                     <span class="text">头条</span>
                 </div>
                 <div class="center">
-                    <span class="count">88</span>
-                    <span class="text">头条</span>
+                    <span class="count">{{ userInfo.follow_count }}</span>
+                    <span class="text">关注</span>
                 </div>
                 <div class="center">
-                    <span class="count">88</span>
-                    <span class="text">头条</span>
+                    <span class="count">{{ userInfo.fans_count }}</span>
+                    <span class="text">粉丝</span>
                 </div>
                 <div class="center">
-                    <span class="count">88</span>
-                    <span class="text">头条</span>
+                    <span class="count">{{ userInfo.like_count }}</span>
+                    <span class="text">获赞</span>
                 </div>
             </div>
         </div>
@@ -55,9 +55,9 @@
 
         <!-- 单元格导航 S -->
         <van-cell-group>
-            <van-cell title="消息通知" is-link to="/login" />
+            <van-cell title="消息通知" is-link to="/message" />
             <!-- TODO: 点击跳转消息通知 -->
-            <van-cell title="小智同学" is-link />
+            <van-cell title="小智同学" is-link to="/xiaozhi" />
             <!-- TODO: 点击跳转小智同学 -->
         </van-cell-group>
         <!-- 单元格导航 E -->
@@ -70,10 +70,14 @@
 
 <script>
 import { mapState } from "vuex";
+import { userInfoAPI } from "@/api";
+
 export default {
     name: "My",
     data() {
-        return {};
+        return {
+            userInfo: {}, // 用户信息
+        };
     },
     methods: {
         toLogin() {
@@ -82,7 +86,6 @@ export default {
             });
         },
         exit() {
-            console.log("退出处理");
             this.$dialog
                 .confirm({
                     title: "退出提示",
@@ -90,9 +93,25 @@ export default {
                 })
                 .then(() => {
                     // 确认退出：清除登录状态（容器中的 user + 本地存储中的 user ）
-                    this.$store.commit("setUser", null)
+                    this.$store.commit("setUser", null);
+                })
+                .catch(() => {
+                    // 用于捕获错误
                 });
         },
+        // 获取用户信息
+        async getUserInfo() {
+            try {
+                const { data } = await userInfoAPI(this.user.token);
+                this.userInfo = data.data;
+            } catch (error) {
+                console.log("获取用户信息失败", error);
+            }
+        },
+    },
+    created() {
+        // 根据用户是否登录判断是否获取用户信息
+        if (this.user) this.getUserInfo();
     },
     computed: {
         ...mapState(["user"]),
