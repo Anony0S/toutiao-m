@@ -1,11 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import { getItem } from "@/utils/storage"
+import { getItem } from "@/utils/auth";
 
-import { Toast } from 'vant';
+import { Toast } from "vant";
 Vue.use(Toast);
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const router = new VueRouter({
 	routes: [
@@ -13,42 +13,38 @@ const router = new VueRouter({
 			path: "/login",
 			name: "login",
 			component: () => import("@/views/login"),
-			meta: { title: "登录" }
+			meta: { title: "登录" },
 		},
 		{
 			path: "/",
-			redirect: "/home",	//默认页面，名字和路径都可以
-			component: () => import('@/views/layout'),
+			redirect: "/home", //默认页面，名字和路径都可以
+			component: () => import("@/views/layout"),
 			children: [
 				{
-					path: "home",	//默认子路由
+					path: "home", //默认子路由
 					name: "home",
 					component: () => import("@/views/home"),
-					meta: { title: "首页" }
-
+					meta: { title: "首页" },
 				},
 				{
 					path: "question",
 					name: "question",
 					component: () => import("@/views/question"),
-					meta: { title: "问答" }
-
+					meta: { title: "问答" },
 				},
 				{
 					path: "movies",
 					name: "movies",
 					component: () => import("@/views/movies"),
-					meta: { title: "视频" }
-
+					meta: { title: "视频" },
 				},
 				{
 					path: "my",
 					name: "my",
 					component: () => import("@/views/my"),
-					meta: { title: "我的" }
-
-				}
-			]
+					meta: { title: "我的" },
+				},
+			],
 		},
 		{
 			path: "/message",
@@ -57,8 +53,8 @@ const router = new VueRouter({
 			meta: {
 				// 是否需要鉴权
 				isAth: true,
-				title: "消息通知"
-			}
+				title: "消息通知",
+			},
 		},
 		{
 			path: "/xiaozhi",
@@ -67,25 +63,24 @@ const router = new VueRouter({
 			meta: {
 				// 是否需要鉴权
 				isAth: true,
-				title: "小智同学"
-			}
-		}
-	]
-})
-
+				title: "小智同学",
+			},
+		},
+	],
+});
 
 // 使用前置路由守卫进行权限校验
 // 注意：路由守卫必须放在 路由实例 抛出之前
 router.beforeEach((to, from, next) => {
 	if (to.meta.isAth) {
-		if (getItem('TOUTIAO_SER')) next()
-		else Toast.fail("请登陆！")
-	} else next()
-})
+		if (getItem()) next();
+		else Toast.fail("请登陆！");
+	} else next();
+});
 
 // 使用后置路由守卫：更新页面标题
-router.afterEach((to, from) => {
-	document.title = to.meta.title || "黑马头条"
-})
+router.afterEach((to) => {
+	document.title = to.meta.title || "黑马头条";
+});
 
-export default router
+export default router;

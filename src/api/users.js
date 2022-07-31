@@ -10,9 +10,8 @@ export const login = data => request({
 })
 
 // 发送验证码
-export const sendSMS = params => request({
-	url: "/v1_0/sms/codes/:mobile",
-	params
+export const sendSMS = mobile => request({
+	url: "/v1_0/sms/codes/" + mobile,
 })
 
 // 获取用户自己信息
