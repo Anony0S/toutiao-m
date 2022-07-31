@@ -8,26 +8,30 @@ const request = axios.create({
 	// baseURL: "http://toutiao.itheima.net/"
 	// baseURL: "http://liufusong.top:7001"
 	// baseURL: "http://liufusong.top:8000"
-	baseURL: "http://toutiao.itheima.net"
-})
-
-// 请求拦截器
-request.interceptors.request.use(function (config) {
-	// 在发送请求之前做些什么
-	// config: 本次请求的请求配置对象
-	const { user } = store.state
-	if (user && user.token) {
-		config.headers.Authorization = `Bearer ${store.state.user.token}`
-	}
-
-	// 注意：这里务必要返回 config 配置对象，否则请求就停在这里出不去了
-	return config;
-}, function (error) {
-	// 对请求错误做些什么
-	// 如果请求出错了（还没有发出去）会进入这里
-	return Promise.reject(error);
+	baseURL: "http://toutiao.itheima.net",
+	timeout: 3000,
 });
 
-// 响应拦截器 
+// 请求拦截器
+request.interceptors.request.use(
+	function (config) {
+		// 在发送请求之前做些什么
+		// config: 本次请求的请求配置对象
+		const { user } = store.state;
+		if (user && user.token) {
+			config.headers.Authorization = `Bearer ${store.state.user.token}`;
+		}
 
-export default request
+		// 注意：这里务必要返回 config 配置对象，否则请求就停在这里出不去了
+		return config;
+	},
+	function (error) {
+		// 对请求错误做些什么
+		// 如果请求出错了（还没有发出去）会进入这里
+		return Promise.reject(error);
+	}
+);
+
+// 响应拦截器
+
+export default request;

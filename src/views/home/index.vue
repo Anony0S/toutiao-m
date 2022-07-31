@@ -11,13 +11,19 @@
 		<!-- 通过 v-model 绑定当前激活标签对应的索引值，默认情况下启用第一个标签。 -->
 		<!-- 通过 animated 属性可以开启切换标签内容时的转场动画。 -->
 		<!-- 通过 swipeable 属性可以开启滑动切换标签页。 注意滑动范围 -->
-		<van-tabs v-model="active" animated swipeable class="home-tab">
-			<van-tab title="推荐">内容 1</van-tab>
-			<van-tab title="热门话题">内容 2</van-tab>
-			<van-tab title="科技动态">内容 3</van-tab>
-			<van-tab title="区块链">内容 4</van-tab>
-			<van-tab title="内容5">内容 5</van-tab>
-			<van-tab title="标签6">内容 6</van-tab>
+		<van-tabs
+			v-model="active"
+			animated
+			swipeable
+			class="home-tab"
+			sticky
+			offset-top="13.3vw"
+		>
+			<van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
+				<!-- 文章列表 S -->
+				<ArticleList :channel="item"></ArticleList>
+				<!-- 文章列表 E -->
+			</van-tab>
 			<div class="tabnav-right"></div>
 			<i
 				slot="nav-right"
@@ -30,11 +36,15 @@
 </template>
 
 <script>
+import { getChannelsAPI } from "@/api";
+import ArticleList from "./components/articleList.vue";
 export default {
 	name: "Home",
+	components: { ArticleList },
 	data() {
 		return {
 			active: 0,
+			channelsList: [],
 		};
 	},
 	methods: {
@@ -46,13 +56,30 @@ export default {
 			// TODO: 汉堡按钮显示值
 			console.log("触发 汉堡按钮");
 		},
+		// 获取频道列表
+		async getChannels() {
+			try {
+				const res = await getChannelsAPI();
+				this.channelsList = res.data.data.channels;
+			} catch (error) {
+				this.$toast.fail("获取频道列表错误");
+				console.log(error);
+			}
+		},
+	},
+	mounted() {
+		this.getChannels();
 	},
 };
 </script>
 
 <style scoped lang="less">
 .home-container {
+	padding-bottom: 50px;
 	.search {
+		position: fixed;
+		z-index: 1;
+		width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -87,7 +114,7 @@ export default {
 				.van-tab {
 					width: 100px;
 					border-right: 1px solid #edeff3;
-					font-size: 16px;
+					font-size: 15px;
 					color: #777;
 				}
 				.van-tab--active {
