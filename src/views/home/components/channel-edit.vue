@@ -85,7 +85,7 @@ export default {
 	},
 	methods: {
 		edit() {
-			// TODO: 编辑按钮
+			// 编辑按钮
 			this.closeShow = !this.closeShow;
 		},
 		// 获取所有频道列表
@@ -107,7 +107,7 @@ export default {
 		clickChannel(item, index) {
 			// 根据编辑状态判断点击还是删除
 			if (this.closeShow) {
-				// TODO: 删除我的频道
+				// 删除我的频道
 				if (this.fixChannels.includes(index)) return;
 				this.$bus.$emit("delChannel", index);
 			} else {

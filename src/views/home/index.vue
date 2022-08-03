@@ -71,8 +71,8 @@ export default {
 	},
 	methods: {
 		toSearch() {
-			// TODO: 去往搜索页
-			console.log("触发 搜索");
+			// 去往搜索页
+			this.$router.push({ name: "search" });
 		},
 		hamburgerShow() {
 			// 汉堡按钮显示值
@@ -97,7 +97,7 @@ export default {
 		// 增加频道列表
 		async addChannel(channel) {
 			this.channelsList.push(channel);
-			// TODO: 数据持久化
+			// 数据持久化
 			if (this.user) {
 				try {
 					// 登录状态

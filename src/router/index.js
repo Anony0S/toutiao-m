@@ -66,6 +66,11 @@ const router = new VueRouter({
 				title: "小智同学",
 			},
 		},
+		{
+			path: "/search",
+			name: "search",
+			component: () => import("@/views/search"),
+		},
 	],
 });
 
