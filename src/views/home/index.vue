@@ -32,19 +32,41 @@
 			></i>
 		</van-tabs>
 		<!-- 标签页 E -->
+
+		<!-- 弹出层 S -->
+		<van-popup
+			v-model="popupShow"
+			closeable
+			position="bottom"
+			:style="{ height: '100%' }"
+			duration=".2"
+			close-icon-position="top-left"
+		>
+			<ChannelEdit :channelsList="channelsList" :active="active"></ChannelEdit>
+		</van-popup>
+		<!-- 弹出层 E -->
 	</div>
 </template>
 
 <script>
-import { getChannelsAPI } from "@/api";
+import {
+	getUserChannelsAPI,
+	setUserChannelsAPI,
+	delUserChannelAPI,
+} from "@/api";
+import { mapState } from "vuex";
+import { set, get } from "@/utils/storage";
 import ArticleList from "./components/articleList.vue";
+import ChannelEdit from "./components/channel-edit.vue";
 export default {
 	name: "Home",
-	components: { ArticleList },
+	components: { ArticleList, ChannelEdit },
 	data() {
 		return {
 			active: 0,
 			channelsList: [],
+			// 控制弹出层参数
+			popupShow: false,
 		};
 	},
 	methods: {
@@ -53,22 +75,79 @@ export default {
 			console.log("触发 搜索");
 		},
 		hamburgerShow() {
-			// TODO: 汉堡按钮显示值
-			console.log("触发 汉堡按钮");
+			// 汉堡按钮显示值
+			this.popupShow = true;
 		},
 		// 获取频道列表
 		async getChannels() {
 			try {
-				const res = await getChannelsAPI();
-				this.channelsList = res.data.data.channels;
+				const res = await getUserChannelsAPI();
+				if (this.user) {
+					// 登录状态 远程获取列表
+					this.channelsList = res.data.data.channels;
+				} else {
+					// 未登录状态 本地获取列表
+					this.channelsList = get("TOUTIAO_CHANNELS") || res.data.data.channels;
+				}
 			} catch (error) {
 				this.$toast.fail("获取频道列表错误");
 				console.log(error);
 			}
 		},
+		// 增加频道列表
+		async addChannel(channel) {
+			this.channelsList.push(channel);
+			// TODO: 数据持久化
+			if (this.user) {
+				try {
+					// 登录状态
+					await setUserChannelsAPI({
+						id: channel.id,
+						seq: this.channelsList.length,
+					});
+				} catch (error) {
+					this.$toast.fail("保存列表失败，\n请重试！");
+					console.log(error);
+				}
+			} else {
+				// 未登录状态
+				set("TOUTIAO_CHANNELS", this.channelsList);
+			}
+		},
+		// 删除频道列表
+		async delChannel(index) {
+			if (this.user) {
+				//登录状态
+				try {
+					const id = this.channelsList[index].id;
+					await delUserChannelAPI(id);
+					this.channelsList.splice(index, 1);
+					if (index < this.active) this.active--;
+				} catch (error) {
+					this.$toast.fail("删除频道失败！");
+					console.log(error);
+				}
+			} else {
+				this.channelsList.splice(index, 1);
+				if (index < this.active) this.active--;
+				set("TOUTIAO_CHANNELS", this.channelsList);
+			}
+		},
+	},
+	computed: {
+		...mapState(["user"]),
 	},
 	mounted() {
 		this.getChannels();
+		// 我的频道添加
+		this.$bus.$on("addChannel", this.addChannel);
+		// 点击跳转页面
+		this.$bus.$on("changeActive", (index) => {
+			this.active = index;
+			this.popupShow = false;
+		});
+		// 我的频道删除
+		this.$bus.$on("delChannel", this.delChannel);
 	},
 };
 </script>

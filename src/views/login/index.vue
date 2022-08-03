@@ -81,8 +81,8 @@ export default {
 						message: "手机号不能为空！",
 					},
 					{
-						pattern: /^1[3|5|7|8|9]\d{9}$/,
-						message: "手机号格式错误！",
+						pattern: /^1[3|5|7|8|9|]\d{9}$/,
+						message: "账号格式错误！",
 					},
 				],
 				code: [
@@ -92,7 +92,7 @@ export default {
 					},
 					{
 						pattern: /^\d{6}$/,
-						message: "验证码格式错误！",
+						message: "密码格式错误！",
 					},
 				],
 			},

@@ -1,7 +1,12 @@
 // API 汇总
 
 import { login, sendSMS, userInfo } from "./users";
-import { getChannels } from "./channels";
+import {
+	getChannels,
+	getUserChannels,
+	setUserChannels,
+	delUserChannel,
+} from "./channels";
 import { getArticleList } from "./news";
 
 // 用户认证 API
@@ -18,3 +23,12 @@ export const getChannelsAPI = getChannels;
 
 // 获取文章新闻推荐
 export const getArticleListAPI = getArticleList;
+
+// 获取用户频道列表
+export const getUserChannelsAPI = getUserChannels;
+
+// 设置用户的频道
+export const setUserChannelsAPI = setUserChannels;
+
+// 删除用户频道
+export const delUserChannelAPI = delUserChannel;

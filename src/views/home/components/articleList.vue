@@ -2,7 +2,7 @@
 	<div class="article-list">
 		<van-pull-refresh
 			v-model="isLoading"
-			@refresh="onRefresh"
+			@refresh="onLoad"
 			:success-text="successText"
 		>
 			<van-list
@@ -71,6 +71,7 @@ export default {
 	},
 	methods: {
 		// 初始化或滑动到底部时会触发
+		// 将下拉刷新和上滑刷新整合
 		async onLoad() {
 			try {
 				const {
@@ -78,28 +79,22 @@ export default {
 						data: { results, pre_timestamp },
 					},
 				} = await this.getArticleList();
-				console.log(results);
-
-				// // 模拟请求失败的情况
-				// if (Math.random() < 0.5) {
-				// 	throw new Error("请求错误！");
-				// }
-
-				this.list.push(...results);
-				// 加载结束之后将加载状态设置为结束
-				this.loading = false;
+				if (this.loading) this.list.push(...results);
+				else this.list.unshift(...results);
 				// 判断是否全部加载完成
-				if (results.length) {
-					// 获取下一页数据的时间戳
-					this.timestamp = pre_timestamp;
-				} else {
+				if (pre_timestamp === null) {
 					// 没有数据了
 					this.finished = true;
+				} else {
+					// 获取下一页数据的时间戳
+					this.timestamp = pre_timestamp;
 				}
 			} catch (error) {
 				this.error = true;
-				this.loading = false;
 				console.log("获取文章详情失败！", error);
+			} finally {
+				this.loading = false;
+				this.isLoading = false;
 			}
 		},
 		// 获取文章新闻推荐
@@ -111,35 +106,13 @@ export default {
 			// console.log(res);
 			return res;
 		},
-		// 下拉刷新
-		async onRefresh() {
-			try {
-				const {
-					data: {
-						data: { results, pre_timestamp },
-					},
-				} = await this.getArticleList({
-					channel_id: this.channel.id,
-					timestamp: +new Date(),
-				});
-				// console.log(results);
-				this.list.unshift(...results);
-				this.timestamp = pre_timestamp;
-				// console.log("触发下拉刷新！");
-				// 关闭下拉刷新 loading 状态
-				this.isLoading = false;
-			} catch (error) {
-				this.successText = "刷新失败！";
-				console.log(error);
-				this.isLoading = false;
-			}
-		},
 	},
 };
 </script>
 
 <style lang="less">
 .article-list {
+	// 设置高度，避免向下滑动整个body移动影响其他频道位置
 	height: calc(200vw - 143px);
 	overflow-y: auto;
 	.van-list {
@@ -173,6 +146,8 @@ export default {
 			}
 			.right {
 				flex: 1;
+				display: flex;
+				justify-content: right;
 				img {
 					width: 116px;
 					height: 73px;
