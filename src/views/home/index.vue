@@ -149,6 +149,10 @@ export default {
 		// 我的频道删除
 		this.$bus.$on("delChannel", this.delChannel);
 	},
+	beforeDestroy() {
+		this.$bus.$off("addChannel");
+		this.$bus.$off("delChannel");
+	},
 };
 </script>
 

@@ -100,7 +100,12 @@ export default {
 				const { data } = await userInfoAPI(this.user.token);
 				this.userInfo = data.data;
 			} catch (error) {
-				console.log("获取用户信息失败", error);
+				if (error.message === "timeout of 3000ms exceeded")
+					this.$toast.fail("获取信息超时！");
+				else {
+					this.$toast.fail("未知错误");
+					console.log(error);
+				}
 			}
 		},
 	},
