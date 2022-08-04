@@ -43,7 +43,11 @@ export default {
 			this.$bus.$emit("allDel");
 		},
 		delThisData(index) {
-			this.$bus.$emit("delThisData", index);
+			if (this.isDelete) {
+				this.$bus.$emit("delThisData", index);
+			} else {
+				this.$bus.$emit("toThisData", index);
+			}
 		},
 	},
 };

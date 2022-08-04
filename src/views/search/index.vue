@@ -65,11 +65,16 @@ export default {
 		this.$bus.$on("allDel", () => (this.historyData = []));
 		// 删除指定项
 		this.$bus.$on("delThisData", (index) => this.historyData.splice(index, 1));
+		// 搜索指定项
+		this.$bus.$on("toThisData", (index) =>
+			this.onSearch(this.historyData[index])
+		);
 	},
 	beforeDestroy() {
 		this.$bus.$off("onHintSearch");
 		this.$bus.$off("allDel");
 		this.$bus.$off("delThisData");
+		this.$bus.$off("toThisData");
 	},
 	watch: {
 		historyData() {
