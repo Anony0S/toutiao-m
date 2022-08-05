@@ -7,7 +7,7 @@ import {
 	setUserChannels,
 	delUserChannel,
 } from "./channels";
-import { getArticleList } from "./news";
+import { getArticleList, getArticle } from "./news";
 import { searchHint, searchResaults } from "./search";
 
 // 用户认证 API
@@ -39,3 +39,6 @@ export const searchHintAPI = searchHint;
 
 // 获取搜索结果
 export const searchResaultsAPI = searchResaults;
+
+// 获取新闻详情
+export const getArticleAPI = getArticle;

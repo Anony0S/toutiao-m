@@ -48,7 +48,7 @@ export default {
 		},
 	},
 	watch: {
-		// 防抖：也可使用插件
+		// 防抖：也可使用插件（lodash）
 		searchValue: {
 			// 初始化调用
 			immediate: true,

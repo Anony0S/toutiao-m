@@ -71,6 +71,13 @@ const router = new VueRouter({
 			name: "search",
 			component: () => import("@/views/search"),
 		},
+		{
+			path: "/article/:articleID",
+			name: "article",
+			component: () => import("@/views/article"),
+			// 开启路由 props 传参
+			props: true,
+		},
 	],
 });
 

@@ -13,7 +13,11 @@
 				:error.sync="error"
 				error-text="请求失败，点击重新加载"
 			>
-				<van-cell v-for="item in list" :key="item.art_id">
+				<van-cell
+					v-for="item in list"
+					:key="item.art_id"
+					:to="{ name: 'article', params: { articleID: item.art_id } }"
+				>
 					<div slot="default" class="list-item">
 						<div class="left">
 							<div class="text">{{ item.title }}</div>
