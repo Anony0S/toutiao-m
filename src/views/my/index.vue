@@ -14,7 +14,7 @@
 					<van-image class="avator" :src="userInfo.photo" round fit="cover" />
 					<span>{{ userInfo.name }}</span>
 				</div>
-				<button class="right">编辑资料</button>
+				<button class="right" @click="$router.push('/user')">编辑资料</button>
 			</div>
 			<div class="message">
 				<div class="center">

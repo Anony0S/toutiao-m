@@ -1,6 +1,12 @@
 // API 汇总
 
-import { login, sendSMS, userInfo } from "./users";
+import {
+	login,
+	sendSMS,
+	userInfo,
+	getUserProfile,
+	updateAvator,
+} from "./users";
 import {
 	getChannels,
 	getUserChannels,
@@ -42,3 +48,9 @@ export const searchResaultsAPI = searchResaults;
 
 // 获取新闻详情
 export const getArticleAPI = getArticle;
+
+// 获取用户个人资料
+export const getUserProfileAPI = getUserProfile;
+
+// 上传头像
+export const updateAvatorAPI = updateAvator;

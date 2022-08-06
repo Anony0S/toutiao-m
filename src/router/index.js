@@ -78,6 +78,10 @@ const router = new VueRouter({
 			// 开启路由 props 传参
 			props: true,
 		},
+		{
+			path: "/user",
+			component: () => import("@/views/user"),
+		},
 	],
 });
 

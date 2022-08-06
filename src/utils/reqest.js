@@ -4,12 +4,9 @@ import store from "@/store";
 
 const request = axios.create({
 	// 接口的基准路径
-	// baseURL: "http://ttapi.research.itcast.cn/"
-	// baseURL: "http://toutiao.itheima.net/"
-	// baseURL: "http://liufusong.top:7001"
-	// baseURL: "http://liufusong.top:8000"
+	// baseURL: "http://liufusong.top:8000",
 	baseURL: "http://toutiao.itheima.net",
-	timeout: 3000,
+	// timeout: 3000,
 });
 
 // 请求拦截器
