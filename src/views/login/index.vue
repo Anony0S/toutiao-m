@@ -69,7 +69,7 @@ export default {
 		return {
 			user: {
 				// 手机号、
-				mobile: "13911111111",
+				mobile: "13911123111",
 				// 验证码
 				code: "246810",
 			},

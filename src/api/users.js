@@ -38,3 +38,11 @@ export const updateAvator = (file) => {
 		data: fm,
 	});
 };
+
+// 编辑用户个人资料
+export const changeProfile = (data) =>
+	request({
+		method: "PATCH",
+		url: "/v1_0/user/profile",
+		data,
+	});

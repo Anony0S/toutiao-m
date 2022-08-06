@@ -27,6 +27,42 @@
 			ref="file"
 			@change="selectPhoto"
 		/>
+
+		<!-- 昵称 -->
+		<van-cell
+			title="昵称"
+			is-link
+			:value="userProfile.name"
+			@click="isShowNick = true"
+		/>
+		<ChangeNick
+			:isShowNick="isShowNick"
+			:nickName="userProfile.name"
+		></ChangeNick>
+
+		<!-- 性别 -->
+		<van-cell
+			title="性别"
+			is-link
+			:value="userProfile.gender ? '女' : '男'"
+			@click="isShowGender = true"
+		/>
+		<ChangeGender
+			:isShowGender="isShowGender"
+			:gender="userProfile.gender"
+		></ChangeGender>
+
+		<!-- 生日 -->
+		<van-cell
+			title="生日"
+			is-link
+			:value="userProfile.birthday"
+			@click="isShowBirthday = true"
+		/>
+		<ChangeBirthday
+			:isShowBirthday="isShowBirthday"
+			:birthday="userProfile.birthday"
+		></ChangeBirthday>
 		<!-- 用户信息 E -->
 
 		<!-- 弹出层 -->
@@ -46,11 +82,14 @@
 
 <script>
 import { getUserProfileAPI } from "@/api";
-import UpdataAvator from "./components/UpdateAvator.vue";
+import UpdataAvator from "./components/UpdateAvator";
 import { imgToBase64 } from "@/utils";
+import ChangeNick from "./components/ChangeNick";
+import ChangeGender from "./components/ChangeGender";
+import ChangeBirthday from "./components/ChangeBirthday";
 export default {
 	name: "User",
-	components: { UpdataAvator },
+	components: { UpdataAvator, ChangeNick, ChangeGender, ChangeBirthday },
 	data() {
 		return {
 			userProfile: {},
@@ -58,6 +97,9 @@ export default {
 			isShowAvator: false,
 			// 接收图片
 			photo: "",
+			isShowNick: false,
+			isShowGender: false,
+			isShowBirthday: false,
 		};
 	},
 	methods: {
@@ -72,7 +114,7 @@ export default {
 		},
 		// 选择文件
 		async selectPhoto(e) {
-			// TODO: 上传头像
+			// 上传头像
 			const file = e.target.files[0];
 
 			// 方法一：

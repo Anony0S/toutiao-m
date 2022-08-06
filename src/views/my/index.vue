@@ -71,7 +71,12 @@ export default {
 	name: "My",
 	data() {
 		return {
-			userInfo: {}, // 用户信息
+			userInfo: {
+				art_count: 0,
+				follow_count: 0,
+				fans_count: 0,
+				like_count: 0,
+			},
 		};
 	},
 	methods: {

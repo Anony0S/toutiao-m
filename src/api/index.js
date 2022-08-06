@@ -6,6 +6,7 @@ import {
 	userInfo,
 	getUserProfile,
 	updateAvator,
+	changeProfile,
 } from "./users";
 import {
 	getChannels,
@@ -54,3 +55,6 @@ export const getUserProfileAPI = getUserProfile;
 
 // 上传头像
 export const updateAvatorAPI = updateAvator;
+
+// 编辑用户个人资料
+export const changeProfileAPI = changeProfile;
