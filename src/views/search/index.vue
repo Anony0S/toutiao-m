@@ -86,7 +86,7 @@ export default {
 
 <style scoped lang="less">
 .search {
-	margin-top: 55px;
+	padding-top: 55px;
 	/deep/.van-search {
 		position: fixed;
 		left: 0;
@@ -94,6 +94,7 @@ export default {
 		top: 0;
 		background-color: #3296fa;
 		z-index: 1;
+		height: 50px;
 	}
 	.van-search__action {
 		color: #fff;

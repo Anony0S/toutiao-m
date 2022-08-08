@@ -20,6 +20,14 @@ Vue.use(Vant);
 // 引入 Vuex
 import store from "./store";
 
+// 引入动画
+import "animate.css";
+
+// 引入代码高亮插件
+import hljs from "highlight.js";
+import "highlight.js/styles/googlecode.css"; //这里有多个样式，自己可以根据需要切换
+Vue.use(hljs);
+
 Vue.config.productionTip = false;
 
 new Vue({

@@ -118,9 +118,9 @@ export default {
 .article-list {
 	// 设置高度，避免向下滑动整个body移动影响其他频道位置
 	height: calc(100vh - 14.2vh);
+	padding-top: 49px;
 	overflow-y: auto;
 	.van-list {
-		margin-top: 49px;
 		.list-item {
 			padding: 0;
 			margin: 0;

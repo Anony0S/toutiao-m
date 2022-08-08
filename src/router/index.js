@@ -13,7 +13,7 @@ const router = new VueRouter({
 			path: "/login",
 			name: "login",
 			component: () => import("@/views/login"),
-			meta: { title: "登录" },
+			meta: { title: "登录", index: 2 },
 		},
 		{
 			path: "/",
@@ -24,25 +24,25 @@ const router = new VueRouter({
 					path: "home", //默认子路由
 					name: "home",
 					component: () => import("@/views/home"),
-					meta: { title: "首页" },
+					meta: { title: "首页", index: 1 },
 				},
 				{
 					path: "question",
 					name: "question",
 					component: () => import("@/views/question"),
-					meta: { title: "问答" },
+					meta: { title: "问答", index: 2 },
 				},
 				{
 					path: "movies",
 					name: "movies",
 					component: () => import("@/views/movies"),
-					meta: { title: "视频" },
+					meta: { title: "视频", index: 3 },
 				},
 				{
 					path: "my",
 					name: "my",
 					component: () => import("@/views/my"),
-					meta: { title: "我的" },
+					meta: { title: "我的", index: 4 },
 				},
 			],
 		},
@@ -70,6 +70,9 @@ const router = new VueRouter({
 			path: "/search",
 			name: "search",
 			component: () => import("@/views/search"),
+			meta: {
+				index: 2,
+			},
 		},
 		{
 			path: "/article/:articleID",
@@ -77,10 +80,16 @@ const router = new VueRouter({
 			component: () => import("@/views/article"),
 			// 开启路由 props 传参
 			props: true,
+			meta: {
+				index: 3,
+			},
 		},
 		{
 			path: "/user",
 			component: () => import("@/views/user"),
+			meta: {
+				index: 5,
+			},
 		},
 	],
 });

@@ -1,20 +1,25 @@
 <template>
 	<div class="article-container">
 		<!-- 导航栏 -->
-		<van-nav-bar class="page-nav-bar" left-arrow title="黑马头条"></van-nav-bar>
+		<van-nav-bar
+			class="page-nav-bar"
+			left-arrow
+			title="黑马头条"
+			@click-left="onClickLeft"
+		></van-nav-bar>
 		<!-- /导航栏 -->
 
 		<div class="main-wrap">
 			<!-- 加载中 -->
-			<div class="loading-wrap">
+			<div class="loading-wrap" v-if="isLoading && !isFail">
 				<van-loading color="#3296fa" vertical>加载中</van-loading>
 			</div>
 			<!-- /加载中 -->
 
 			<!-- 加载完成-文章详情 -->
-			<div class="article-detail">
+			<div class="article-detail" v-else>
 				<!-- 文章标题 -->
-				<h1 class="article-title">这是文章标题</h1>
+				<h1 class="article-title">{{ article.title }}</h1>
 				<!-- /文章标题 -->
 
 				<!-- 用户信息 -->
@@ -24,10 +29,10 @@
 						slot="icon"
 						round
 						fit="cover"
-						src="https://img.yzcdn.cn/vant/cat.jpeg"
+						:src="article.aut_photo"
 					/>
-					<div slot="title" class="user-name">黑马头条号</div>
-					<div slot="label" class="publish-date">14小时前</div>
+					<div slot="title" class="user-name">{{ article.aut_name }}</div>
+					<div slot="label" class="publish-date">{{ article.pubdate }}</div>
 					<van-button
 						class="follow-btn"
 						type="info"
@@ -35,31 +40,31 @@
 						round
 						size="small"
 						icon="plus"
-						>关注</van-button
+						v-if="!article.is_followed"
 					>
-					<!-- <van-button
-            class="follow-btn"
-            round
-            size="small"
-          >已关注</van-button> -->
+						关注
+					</van-button>
+					<van-button class="follow-btn" round size="small" v-else
+						>已关注</van-button
+					>
 				</van-cell>
 				<!-- /用户信息 -->
 
 				<!-- 文章内容 -->
-				<div class="article-content">这是文章内容</div>
+				<div class="article-content" v-html="article.content"></div>
 				<van-divider>正文结束</van-divider>
 			</div>
 			<!-- /加载完成-文章详情 -->
 
 			<!-- 加载失败：404 -->
-			<div class="error-wrap">
+			<div class="error-wrap" v-if="is404 && isFail">
 				<van-icon name="failure" />
 				<p class="text">该资源不存在或已删除！</p>
 			</div>
 			<!-- /加载失败：404 -->
 
 			<!-- 加载失败：其它未知错误（例如网络原因或服务端异常） -->
-			<div class="error-wrap">
+			<div class="error-wrap" v-if="!is404 && isFail">
 				<van-icon name="failure" />
 				<p class="text">内容加载失败！</p>
 				<van-button class="retry-btn">点击重试</van-button>
@@ -85,6 +90,14 @@
 import { getArticleAPI } from "@/api";
 export default {
 	name: "Article",
+	data() {
+		return {
+			article: {},
+			isLoading: false,
+			isFail: false,
+			is404: false,
+		};
+	},
 	props: {
 		articleID: {
 			//接收两种参数类型：点击链接和跳转时候的数据类型不同
@@ -96,12 +109,17 @@ export default {
 		// 获取文章详情
 		async getArticle() {
 			try {
+				this.isLoading = true;
 				const { data } = await getArticleAPI(this.articleID);
-				console.log(data.data);
+				this.article = data.data;
+				this.isLoading = false;
 			} catch (error) {
-				this.$toast.fail("获取文章详情失败！");
+				this.isFail = true;
 				console.log(error);
 			}
+		},
+		onClickLeft() {
+			this.$router.back();
 		},
 	},
 	mounted() {
@@ -112,6 +130,9 @@ export default {
 
 <style scoped lang="less">
 .article-container {
+	/deep/.van-nav-bar .van-icon {
+		color: #fff;
+	}
 	.main-wrap {
 		position: fixed;
 		left: 0;
@@ -154,9 +175,13 @@ export default {
 		}
 
 		.article-content {
+			width: 100%;
 			padding: 27.5px 16px;
 			/deep/ p {
 				text-align: justify;
+			}
+			/deep/img {
+				width: 100%;
 			}
 		}
 	}

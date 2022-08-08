@@ -17,7 +17,7 @@
 			swipeable
 			class="home-tab"
 			sticky
-			offset-top="13.3vw"
+			offset-top="50px"
 		>
 			<van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
 				<!-- 文章列表 S -->
@@ -215,7 +215,7 @@ export default {
 					top: 50px;
 					width: 33px;
 					height: 42px;
-					line-height: 44px;
+					line-height: 43px;
 					background-color: #fff;
 					text-align: center;
 					opacity: 0.9;

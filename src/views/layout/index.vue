@@ -1,7 +1,14 @@
 <template>
 	<div>
 		<!-- 子路由出口 S -->
-		<router-view></router-view>
+		<Transition
+			appear
+			name="animate__animated animate__bounce"
+			:enter-active-class="`animate__${right} animate__faster`"
+			:leave-active-class="`animate__${left} animate__faster`"
+		>
+			<router-view class="router"> </router-view>
+		</Transition>
 		<!-- 子路由出口 E -->
 
 		<!-- tabbar S -->
@@ -27,15 +34,35 @@
 export default {
 	name: "LayoutIndex",
 	data() {
-		return {};
+		return {
+			right: "fadeIn",
+			left: "fadeOut",
+		};
+	},
+	watch: {
+		$route(to, from) {
+			if (to.meta.index > from.meta.index) {
+				this.right = "fadeIn";
+				this.left = "fadeOut";
+			} else {
+				this.right = "fadeIn";
+				this.left = "fadeOut";
+			}
+		},
 	},
 };
 </script>
 
 <style lang="less">
 .layout-tabbar {
+	position: absolute;
 	.iconfont {
 		font-size: 20px;
 	}
+}
+.router {
+	position: absolute;
+	width: 100%;
+	height: 100%;
 }
 </style>

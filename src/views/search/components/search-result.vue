@@ -11,6 +11,7 @@
 			v-for="item in searchValueList"
 			:key="item.art_id"
 			:title="item.title"
+			:to="{ name: 'article', params: { articleID: item.art_id } }"
 		/>
 	</van-list>
 </template>
