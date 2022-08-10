@@ -11,14 +11,7 @@
 		<!-- 通过 v-model 绑定当前激活标签对应的索引值，默认情况下启用第一个标签。 -->
 		<!-- 通过 animated 属性可以开启切换标签内容时的转场动画。 -->
 		<!-- 通过 swipeable 属性可以开启滑动切换标签页。 注意滑动范围 -->
-		<van-tabs
-			v-model="active"
-			animated
-			swipeable
-			class="home-tab"
-			sticky
-			offset-top="50px"
-		>
+		<van-tabs v-model="active" animated swipeable class="home-tab">
 			<van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
 				<!-- 文章列表 S -->
 				<ArticleList :channel="item"></ArticleList>
@@ -189,6 +182,11 @@ export default {
 	// 标签页
 	/deep/.home-tab {
 		.van-tabs__wrap {
+			position: fixed;
+			top: 50px;
+			left: 0;
+			right: 0;
+			z-index: 1;
 			min-height: 42px;
 			border-bottom: 1px solid #edeff3;
 			.van-tabs__nav {

@@ -117,10 +117,11 @@ export default {
 <style lang="less">
 .article-list {
 	// 设置高度，避免向下滑动整个body移动影响其他频道位置
-	height: calc(100vh - 14.2vh);
+	height: calc(100vh - 7.5vh);
 	padding-top: 49px;
 	overflow-y: auto;
 	.van-list {
+		margin-top: 44px;
 		.list-item {
 			padding: 0;
 			margin: 0;

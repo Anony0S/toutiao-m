@@ -46,3 +46,20 @@ export const changeProfile = (data) =>
 		url: "/v1_0/user/profile",
 		data,
 	});
+
+// 关注用户
+export const followUser = (id) =>
+	request({
+		method: "POST",
+		url: "/v1_0/user/followings",
+		data: {
+			target: id,
+		},
+	});
+
+// 取消关注
+export const cancelFollow = (id) =>
+	request({
+		method: "DELETE",
+		url: "/v1_0/user/followings/" + id,
+	});

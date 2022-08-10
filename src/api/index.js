@@ -7,6 +7,8 @@ import {
 	getUserProfile,
 	updateAvator,
 	changeProfile,
+	followUser,
+	cancelFollow,
 } from "./users";
 import {
 	getChannels,
@@ -14,8 +16,16 @@ import {
 	setUserChannels,
 	delUserChannel,
 } from "./channels";
-import { getArticleList, getArticle } from "./news";
+import {
+	getArticleList,
+	getArticle,
+	collectArticle,
+	cancleCollect,
+	setLike,
+	setDislike,
+} from "./news";
 import { searchHint, searchResaults } from "./search";
+import { publishComment, getComments, giveLike, cancelLike } from "./comment";
 
 // 用户认证 API
 export const loginAPI = login;
@@ -58,3 +68,33 @@ export const updateAvatorAPI = updateAvator;
 
 // 编辑用户个人资料
 export const changeProfileAPI = changeProfile;
+
+// 对文章或者评论进行评论
+export const publishCommentAPI = publishComment;
+
+// 获取评论或评论回复
+export const getCommentsAPI = getComments;
+
+// 关注用户
+export const followUserAPI = followUser;
+
+// 取关用户
+export const cancelFollowAPI = cancelFollow;
+
+// 收藏文章
+export const collectArticleAPI = collectArticle;
+
+// 取消收藏文章
+export const cancleCollectAPI = cancleCollect;
+
+// 对文章点赞
+export const setLikeAPI = setLike;
+
+// 取消文章点赞
+export const setDislikeAPI = setDislike;
+
+// 对评论或评论回复点赞
+export const giveLikeAPI = giveLike;
+
+// 取消对评论或评论回复点赞
+export const cancelLikeAPI = cancelLike;
