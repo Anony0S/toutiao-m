@@ -3,13 +3,18 @@
 		<!-- 导航栏 -->
 		<van-nav-bar title="所有回复" left-arrow @click-left="onClickLeft" fixed />
 		<div class="conmtent">
-			<ContentItem :comment="comment" :status="false"></ContentItem>
+			<ContentItem
+				:comment="comment"
+				:status="false"
+				@giveLike="giveLike1"
+			></ContentItem>
 			<div class="all"><i></i><span>全部回复</span><i></i></div>
 			<ContentItem
 				v-for="(comment, index) in cCommentsList"
 				:key="index"
 				:comment="comment"
 				:status="false"
+				@giveLike="giveLike(index)"
 			></ContentItem>
 		</div>
 		<div class="bootom" @click="sendComment">发表评论</div>
@@ -73,6 +78,25 @@ export default {
 				const { data } = error;
 				if (data && data.message) this.$toast.fail(data.message);
 				this.$toast.fail("发表评论失败!");
+			}
+		},
+		// 点赞
+		giveLike(index) {
+			if (this.$parent.$parent.cCommentsList[index].is_liking) {
+				this.$parent.$parent.cCommentsList[index].like_count--;
+				this.$parent.$parent.cCommentsList[index].is_liking = false;
+			} else {
+				this.$parent.$parent.cCommentsList[index].like_count++;
+				this.$parent.$parent.cCommentsList[index].is_liking = true;
+			}
+		},
+		giveLike1() {
+			if (this.$parent.$parent.comment.is_liking) {
+				this.$parent.$parent.comment.like_count--;
+				this.$parent.$parent.comment.is_liking = false;
+			} else {
+				this.$parent.$parent.comment.like_count++;
+				this.$parent.$parent.comment.is_liking = true;
 			}
 		},
 	},

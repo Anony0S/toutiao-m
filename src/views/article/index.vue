@@ -72,7 +72,7 @@
 					@load="onLoad"
 				>
 					<ContentItem
-						v-for="item in commentsList"
+						v-for="(item, index) in commentsList"
 						:key="item.com_id"
 						:comment="item"
 						:isShow="isShow"
@@ -80,6 +80,7 @@
 						@isShow="isShow = true"
 						@comment="setComment"
 						@cCommentsList="setcCommentsList"
+						@giveLike="giveLike(index)"
 					></ContentItem>
 				</van-list>
 			</div>
@@ -349,6 +350,16 @@ export default {
 		// 跳转到评论
 		toComment() {
 			document.querySelector("#comment").scrollIntoView({ behavior: "smooth" });
+		},
+		// 点赞
+		giveLike(index) {
+			if (this.commentsList[index].is_liking) {
+				this.commentsList[index].like_count--;
+				this.commentsList[index].is_liking = false;
+			} else {
+				this.commentsList[index].like_count++;
+				this.commentsList[index].is_liking = true;
+			}
 		},
 	},
 	mounted() {

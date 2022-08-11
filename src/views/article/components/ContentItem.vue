@@ -14,12 +14,12 @@
 			</div>
 		</div>
 		<div class="right">
-			{{ likeCount }}
+			{{ comment.like_count }}
 			<van-icon
 				name="good-job"
 				color="#ff9632"
-				v-if="isLiking"
-				@click="cancelLike"
+				v-if="comment.is_liking"
+				@click="giveLike"
 			/>
 			<van-icon name="good-job-o" v-else @click="giveLike" />
 			赞
@@ -34,8 +34,6 @@ export default {
 	data() {
 		return {
 			cCommentsList: [],
-			likeCount: 0,
-			isLiking: false,
 		};
 	},
 	props: {
@@ -52,16 +50,6 @@ export default {
 	computed: {
 		toNow() {
 			return dayjs(this.comment.pubdate).fromNow();
-		},
-	},
-	watch: {
-		comment: {
-			deep: true,
-			immediate: true,
-			handler(val) {
-				this.likeCount = val.like_count;
-				this.isLiking = val.is_liking;
-			},
 		},
 	},
 
@@ -92,24 +80,16 @@ export default {
 		// 评论点赞
 		async giveLike() {
 			try {
-				await giveLikeAPI(this.comment.com_id);
-				this.isLiking = true;
-				this.$toast.success("点赞成功！");
-				this.likeCount++;
+				if (this.comment.is_liking) {
+					await cancelLikeAPI(this.comment.com_id);
+					this.$toast.success("取消点赞成功！");
+				} else {
+					await giveLikeAPI(this.comment.com_id);
+					this.$toast.success("点赞成功！");
+				}
+				this.$emit("giveLike");
 			} catch (error) {
 				this.$toast.fail("点赞失败！");
-				console.log(error);
-			}
-		},
-		// 取消点赞
-		async cancelLike() {
-			try {
-				await cancelLikeAPI(this.comment.com_id);
-				this.$toast.success("取消点赞成功！");
-				this.likeCount--;
-				this.isLiking = false;
-			} catch (error) {
-				this.$toast.fail("取消点赞失败！");
 				console.log(error);
 			}
 		},
