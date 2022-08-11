@@ -9,9 +9,7 @@
 				</div>
 				<div class="bottom">
 					<span>{{ toNow }}</span>
-					<button @click="toDetalis(comment)">
-						回复 {{ comment.reply_count }}
-					</button>
+					<button @click="toDetalis">回复 {{ comment.reply_count }}</button>
 				</div>
 			</div>
 		</div>
@@ -83,27 +81,27 @@ export default {
 			}
 		},
 		// 评论详情页
-		toDetalis(comment) {
+		toDetalis() {
 			if (this.status) {
 				// 弹出层
-				this.$parent.isShow = true;
-				this.$parent.comment = comment;
-				this.$parent.cCommentsList = this.cCommentsList;
+				this.$emit("isShow");
+				this.$emit("comment", this.comment);
+				this.$emit("cCommentsList", this.cCommentsList);
 			} else return;
 		},
 		// 评论点赞
 		async giveLike() {
 			try {
 				await giveLikeAPI(this.comment.com_id);
+				this.isLiking = true;
 				this.$toast.success("点赞成功！");
 				this.likeCount++;
-				this.isLiking = true;
 			} catch (error) {
 				this.$toast.fail("点赞失败！");
 				console.log(error);
 			}
 		},
-		// TODO: 取消点赞
+		// 取消点赞
 		async cancelLike() {
 			try {
 				await cancelLikeAPI(this.comment.com_id);

@@ -65,13 +65,23 @@
 				<van-divider id="comment">正文结束</van-divider>
 
 				<!-- 文章评论 -->
-				<ContentItem
-					v-for="item in commentsList"
-					:key="item.com_id"
-					:comment="item"
-					:isShow="isShow"
-					:status="true"
-				></ContentItem>
+				<van-list
+					v-model="loading"
+					:finished="finished"
+					finished-text="没有更多了"
+					@load="onLoad"
+				>
+					<ContentItem
+						v-for="item in commentsList"
+						:key="item.com_id"
+						:comment="item"
+						:isShow="isShow"
+						:status="true"
+						@isShow="isShow = true"
+						@comment="setComment"
+						@cCommentsList="setcCommentsList"
+					></ContentItem>
+				</van-list>
 			</div>
 			<!-- /加载完成-文章详情 -->
 
@@ -165,7 +175,7 @@ export default {
 			show: false,
 			message: "",
 			// 评论数据
-			commentsList: null,
+			commentsList: [],
 			// 评论数
 			commentsCount: null,
 			// 关注
@@ -176,6 +186,9 @@ export default {
 			comment: {},
 			// 评论的评论
 			cCommentsList: [],
+			loading: false,
+			finished: false,
+			offset: null,
 		};
 	},
 	props: {
@@ -258,9 +271,17 @@ export default {
 				const { data } = await getCommentsAPI({
 					type: "a",
 					source: this.articleID,
+					offset: this.offset || null,
+					limit: 10,
 				});
-				this.commentsList = data.data.results;
+				this.commentsList.push(...data.data.results);
 				this.commentsCount = data.data.total_count;
+				if (data.data.last_id) {
+					this.offset = data.data.last_id;
+					this.loading = false;
+				} else {
+					this.finished = true;
+				}
 			} catch (error) {
 				this.$toast.fail("获取评论失败!");
 				console.log(error);
@@ -311,6 +332,19 @@ export default {
 				this.$toast.fail("取消点赞失败！");
 				console.log(error);
 			}
+		},
+		// =====传输数据=====
+		setComment(comment) {
+			this.comment = comment;
+		},
+		setcCommentsList(cCommentsList) {
+			this.cCommentsList = cCommentsList;
+		},
+		// =====其他=====
+		// 加载
+		onLoad() {
+			// 触发加载
+			this.getComments();
 		},
 		// 跳转到评论
 		toComment() {
